@@ -1,0 +1,179 @@
+body {
+    background-color: #f7f9fc; /* Lighter background for a cleaner look */
+}
+
+/* Navbar Styles */
+.navbar {
+    margin-bottom: 0;
+    background-color: #6b0ad3; /* Darker background for the navbar */
+    border: 0;
+    font-size: 16px; /* Slightly larger font size for better readability */
+    letter-spacing: 2px;
+    opacity: 0.95; /* Slightly less transparency for better visibility */
+}
+
+/* Navbar Links */
+.navbar li a, .navbar .navbar-brand {
+    color: #e9ecef !important; /* Light color for better contrast */
+}
+
+/* Navbar Link Hover */
+.navbar-nav li a:hover {
+    color: #c2261b !important; /* Orange color for hover effect */
+}
+
+/* Active Navbar Link */
+.navbar-nav li.active a {
+    color: #ffffff !important;
+    background-color: #495057 !important; /* Slightly lighter gray */
+}
+
+/* Collapsible Button */
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+}
+
+/* Dropdown Menu */
+.open .dropdown-toggle {
+    color: #ffffff;
+    background-color: #6c757d !important; /* Lighter gray for dropdown toggle */
+}
+
+/* Dropdown Links */
+.dropdown-menu li a {
+    color: #787272 !important; /* Dark color for readability */
+}
+
+/* Dropdown Hover Links */
+.dropdown-menu li a:hover {
+    background-color: #f1f1f1 !important; /* Light gray for hover effect */
+}
+
+/* Button Styles */
+button {
+    background-color: #dd00ff; /* Blue background for buttons */
+    color: white;
+    font-weight: bold;
+    border: 1px solid #2bff00;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #007db3; /* Darker blue on hover */
+    color: white;
+    border: 1px solid #0aa72c;
+}
+
+/* Background Colors */
+.bg-1 {
+    background: #343a40; /* Dark background for sections */
+    color: #e9ecef; /* Light text color for contrast */
+}
+
+.bg-1 h3 {
+    color: #ffffff;
+}
+
+.bg-1 p {
+    font-style: italic;
+}
+
+/* Products Section */
+.products {
+    background-color: #ffffff; /* White background for product section */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Jumbotron */
+.jumbotron {
+    background-color: #28a745; /* Green background for jumbotron */
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+}
+
+/* Price Tag */
+.price {
+    color: #0c0e0b; /* Red color for price */
+    font-weight: bold;
+    font-size: 22px; /* Larger font size for prominence */
+}
+
+/* Product Name */
+.productname {
+    color: #471f86; /* Green color for product names */
+    font-size: 18px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Product Info */
+.productinfo {
+    color: #333; /* Darker color for product info text */
+    font-size: 14px;
+}
+
+/* Responsive Tabs */
+@media only screen and (min-width: 601px) {
+    .tab {
+        border-radius: 10px;
+        background-color: #ffffff;
+        font-weight: bold;
+        font-size: 22px;
+        margin: 20px;
+        padding: 20px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .tab {
+        border-radius: 10px;
+        background-color: #ffffff;
+        font-weight: bold;
+        font-size: 18px;
+        margin: 2%;
+        padding: 12px;
+    }
+}
+
+/* Shopping Cart Notification Badge */
+.icon-blue {
+    color: #007bff; /* Blue color for icons */
+}
+
+.icon-grey {
+    color: #6c757d; /* Gray color for inactive icons */
+}
+
+i {
+    width: 70px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+}
+
+/* Badge Styling */
+.badge:after {
+    content: attr(data-count);
+    position: absolute;
+    background: #e74c3c; /* Red background for badge */
+    height: 2rem;
+    top: 0.15rem;
+    right: 0.15rem;
+    width: 2rem;
+    text-align: center;
+    line-height: 2rem;
+    font-size: 1rem;
+    border-radius: 50%;
+    color: white;
+    border: 1px solid #e74c3c;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+i.fa::before {
+    font-size: 3rem !important;
+}

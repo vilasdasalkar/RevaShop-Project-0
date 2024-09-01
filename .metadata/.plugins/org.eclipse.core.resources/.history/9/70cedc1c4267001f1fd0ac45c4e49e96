@@ -1,0 +1,130 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.revature.service.dao.*, com.revature.service.*,com.revature.data.*,java.util.*,jakarta.servlet.ServletOutputStream,java.io.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Details</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/changes.css">
+    <style>
+        /* General Body Styling */
+        body {
+            background-color: #E6F9E6;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Main Heading Styling */
+        .main-heading {
+            color: green;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Table Header Styling */
+        .order-table th {
+            background-color: #343a40; /* Dark Gray */
+            color: #ffffff; /* White */
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Table Row Styling */
+        .order-table td {
+            background-color: #ffffff; /* White */
+            font-size: 15px;
+            font-weight: normal;
+            color: #333333; /* Dark Gray */
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* Table Row Hover Effect */
+        .order-table tr:hover {
+            background-color: #f1f1f1; /* Light Gray on Hover */
+        }
+
+        /* Status Column Styling */
+        .status-placed {
+            color: #ff9800; /* Orange for ORDER_PLACED */
+        }
+
+        .status-shipped {
+            color: #4caf50; /* Green for ORDER_SHIPPED */
+        }
+
+        /* Responsive Design for Smaller Screens */
+        @media (max-width: 768px) {
+            .main-heading {
+                font-size: 24px;
+            }
+            .order-table th, .order-table td {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <%
+    /* Checking the user credentials */
+    String userName = (String) session.getAttribute("username");
+    String password = (String) session.getAttribute("password");
+
+    if (userName == null || password == null) {
+        response.sendRedirect("login.jsp?message=Session Expired, Login Again!!");
+    }
+
+    OrderService dao = new OrderServiceImpl();
+    List<OrderDetails> orders = dao.getAllOrderDetails(userName);
+    %>
+
+    <jsp:include page="header.jsp" />
+
+    <div class="container">
+        <div class="text-center main-heading">Order Details</div>
+        <div class="table-responsive">
+            <table class="table table-hover table-sm order-table">
+                <thead>
+                    <tr>
+                        <th>Picture</th>
+                        <th>Product Name</th>
+                        <th>Order ID</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                    for (OrderDetails order : orders) {
+                    %>
+                    <tr>
+                        <td><img src="./ShowImage?pid=<%=order.getProductId()%>" style="width: 50px; height: 50px;"></td>
+                        <td><%=order.getProdName()%></td>
+                        <td><%=order.getOrderId()%></td>
+                        <td><%=order.getQty()%></td>
+                        <td><%=order.getAmount()%></td>
+                        <td><%=order.getTime()%></td>
+                        <td class="<%=order.getShipped() == 0 ? "status-placed" : "status-shipped"%>">
+                            <%=order.getShipped() == 0 ? "ORDER PLACED" : "ORDER SHIPPED"%>
+                        </td>
+                    </tr>
+                    <%
+                    }
+                    %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <jsp:include page="footer.jsp" />
+
+</body>
+</html>
