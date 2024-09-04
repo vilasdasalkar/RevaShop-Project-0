@@ -27,8 +27,8 @@ com\revature\servlets\ShowImage.class
 com\revature\utilities\MailUtil.class
 com\revature\model\UserModel.class
 com\revature\servlets\RemoveProductServlet.class
-com\revature\servlets\AddProductservlet.class
 com\revature\utilities\MailUtil$2.class
+com\revature\servlets\AddProductServlet.class
 com\revature\utilities\IDUtil.class
 com\revature\utilities\MailMessage.class
 com\revature\data\OrderData.class

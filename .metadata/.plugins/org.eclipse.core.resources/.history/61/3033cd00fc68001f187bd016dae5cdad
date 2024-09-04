@@ -1,0 +1,92 @@
+package com.revature.servlets;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import com.revature.service.dao.ProductServiceImpl;
+
+/**
+ * Servlet implementation class AddProductservlet
+ */
+@WebServlet("/AddProductServlet")
+@MultipartConfig(maxFileSize = 16177215)
+public class AddProductSrv extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        String userType = (String) session.getAttribute("usertype");
+        String userName = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
+
+        if (userType == null || !userType.equals("admin")) {
+            response.sendRedirect("login.jsp?message=Access Denied!");
+            return; // Ensure that the method exits after redirection
+        } else if (userName == null || password == null) {
+            response.sendRedirect("login.jsp?message=Session Expired, Login Again to Continue!");
+            return; // Ensure that the method exits after redirection
+        }
+
+        String status = "Product Registration Failed!";
+        String prodName = request.getParameter("name");
+        String prodType = request.getParameter("type");
+        String prodInfo = request.getParameter("info");
+        String priceStr = request.getParameter("price"); // Get the 'price' parameter
+        String quantityStr = request.getParameter("quantity"); // Get the 'quantity' parameter
+
+        if (prodName == null || prodName.trim().isEmpty() ||
+            prodType == null || prodType.trim().isEmpty() ||
+            prodInfo == null || prodInfo.trim().isEmpty() ||
+            priceStr == null || priceStr.trim().isEmpty() ||
+            quantityStr == null || quantityStr.trim().isEmpty()) {
+            
+            request.setAttribute("message", "All fields are required.");
+            RequestDispatcher rd = request.getRequestDispatcher("addProduct.jsp");
+            rd.forward(request, response);
+            return;
+        }
+
+        double prodPrice;
+        int prodQuantity;
+        try {
+            prodPrice = Double.parseDouble(priceStr.trim());
+            prodQuantity = Integer.parseInt(quantityStr.trim());
+        } catch (NumberFormatException e) {
+            request.setAttribute("message", "Price and Quantity must be valid numbers.");
+            RequestDispatcher rd = request.getRequestDispatcher("addProduct.jsp");
+            rd.forward(request, response);
+            return;
+        }
+
+        Part part = request.getPart("image");
+        InputStream prodImage = null;
+        if (part != null) {
+            prodImage = part.getInputStream();
+        } else {
+            request.setAttribute("message", "Product image is required.");
+            RequestDispatcher rd = request.getRequestDispatcher("addProduct.jsp");
+            rd.forward(request, response);
+            return;
+        }
+
+        ProductServiceImpl product = new ProductServiceImpl();
+        status = product.addProduct(prodName, prodType, prodInfo, prodPrice, prodQuantity, prodImage);
+
+        request.setAttribute("message", status);
+        RequestDispatcher rd = request.getRequestDispatcher("addProduct.jsp");
+        rd.forward(request, response);
+    }
+
+}

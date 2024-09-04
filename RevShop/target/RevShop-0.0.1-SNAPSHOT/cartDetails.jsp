@@ -18,7 +18,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body style="background-color: #E6F9E6;">
+<body style="background-color: #9e18b0;">
 
 	<%
 	/* Checking the user credentials */
@@ -61,7 +61,7 @@
 	<jsp:include page="header.jsp" />
 
 	<div class="text-center"
-		style="color: green; font-size: 24px; font-weight: bold;">Cart
+		style="color: rgb(100, 0, 128); font-size: 24px; font-weight: bold;">Cart
 		Items</div>
 	<!-- <script>document.getElementById('mycart').innerHTML='<i data-count="20" class="fa fa-shopping-cart fa-3x icon-white badge" style="background-color:#333;margin:0px;padding:0px; margin-top:5px;"></i>'</script>
  -->
@@ -70,7 +70,7 @@
 
 		<table class="table table-hover">
 			<thead
-				style="background-color: #186188; color: white; font-size: 16px; font-weight: bold;">
+				style="background-color: #186188; color: rgba(255, 255, 255, 0.233); font-size: 16px; font-weight: bold;">
 				<tr>
 					<th>Picture</th>
 					<th>Products</th>
@@ -82,7 +82,7 @@
 				</tr>
 			</thead>
 			<tbody
-				style="background-color: white; font-size: 15px; font-weight: bold;">
+				style="background-color: rgb(255, 255, 255); font-size: 15px; font-weight: bold;">
 
 
 
@@ -132,7 +132,7 @@
 				}
 				%>
 
-				<tr style="background-color: grey; color: white;">
+				<tr style="background-color: rgb(85, 13, 139); color: white;">
 					<td colspan="6" style="text-align: center;">Total Amount to
 						Pay (in Rupees)</td>
 					<td><%=totAmount%></td>
@@ -144,10 +144,10 @@
 					<td colspan="4" style="text-align: center;">
 					<td><form method="post">
 							<button formaction="userHome.jsp"
-								style="background-color: black; color: white;">Cancel</button>
+								style="background-color: rgb(174, 13, 13); color: white;">Cancel</button>
 						</form></td>
 					<td colspan="2" align="center"><form method="post">
-							<button style="background-color: blue; color: white;"
+							<button style="background-color: rgb(21, 24, 186); color: white;"
 								formaction="payment.jsp?amount=<%=totAmount%>">Pay Now</button>
 						</form></td>
 

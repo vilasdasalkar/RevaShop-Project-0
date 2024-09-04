@@ -1,0 +1,71 @@
+package com.revature.servlets;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import com.revature.service.dao.OrderServiceImpl;
+
+@WebServlet("/order")
+public class OrderServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    public OrderServlet() {
+        super();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        String userName = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
+
+        if (userName == null || password == null) {
+            response.sendRedirect("login.jsp?message=Session Expired, Login Again!!");
+            return; // Ensure the response is terminated after redirection
+        }
+
+        // Get the amount parameter and validate it
+        String amountStr = request.getParameter("amount");
+        if (amountStr == null || amountStr.trim().isEmpty()) {
+            response.sendRedirect("order.jsp?message=Amount parameter is missing");
+            return;
+        }
+
+        double paidAmount;
+        try {
+            paidAmount = Double.parseDouble(amountStr.trim());
+        } catch (NumberFormatException e) {
+            response.sendRedirect("order.jsp?message=Invalid amount format");
+            return;
+        }
+
+        // Process the payment
+        String status = new OrderServiceImpl().paymentSuccess(userName, paidAmount);
+
+        response.setContentType("text/html");
+        PrintWriter pw = response.getWriter();
+        
+        // Include the orderDetails.jsp page
+        RequestDispatcher rd = request.getRequestDispatcher("orderDetails.jsp");
+        rd.include(request, response);
+
+        // Print the status message in a script tag
+        pw.println("<script>document.getElementById('message').innerHTML='" + status + "'</script>");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
+}

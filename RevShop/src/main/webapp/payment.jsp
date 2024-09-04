@@ -55,7 +55,7 @@
 <body>
 
     <%
-    /* Checking the user credentials */
+    // Checking the user credentials
     String userName = (String) session.getAttribute("username");
     String password = (String) session.getAttribute("password");
 
@@ -65,7 +65,7 @@
 
     String sAmount = request.getParameter("amount");
     double amount = 0;
-    if (sAmount != null) {
+    if (sAmount != null && !sAmount.trim().isEmpty()) {
         amount = Double.parseDouble(sAmount);
     }
     %>
@@ -74,7 +74,7 @@
 
     <div class="container">
         <div class="row">
-            <form action="./OrderServlet" method="post" class="col-md-6 col-md-offset-3 payment-form" enctype="multipart/form-data">
+            <form action="OrderServlet" method="post" class="col-md-6 col-md-offset-3 payment-form">
                 <div class="text-center">
                     <img src="images/profile.jpg" alt="Payment Proceed" height="100px" />
                     <h2>Credit Card Payment</h2>

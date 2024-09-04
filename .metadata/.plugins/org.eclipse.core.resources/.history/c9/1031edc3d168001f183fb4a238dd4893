@@ -1,0 +1,65 @@
+package com.revature.servlets;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import com.revature.service.dao.OrderServiceImpl;
+@WebServlet("/OrderServlet")
+public class OrderServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Use doPost method for handling logic
+        doPost(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        String userName = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
+
+        if (userName == null || password == null) {
+            response.sendRedirect("login.jsp?message=Session Expired, Login Again!!");
+            return;
+        }
+
+        // Get the amount parameter and validate it
+        String amountStr = request.getParameter("amount");
+        if (amountStr == null || amountStr.trim().isEmpty()) {
+            response.sendRedirect("payment.jsp?message=Amount parameter is missing");
+            return;
+        }
+
+        double paidAmount;
+        try {
+            paidAmount = Double.parseDouble(amountStr.trim());
+        } catch (NumberFormatException e) {
+            response.sendRedirect("payment.jsp?message=Invalid amount format");
+            return;
+        }
+
+        // Process the payment
+        String status = new OrderServiceImpl().paymentSuccess(userName, paidAmount);
+
+        response.setContentType("text/html");
+        PrintWriter pw = response.getWriter();
+        
+        // Include the payment.jsp page for displaying the status
+        RequestDispatcher rd = request.getRequestDispatcher("payment.jsp");
+        rd.include(request, response);
+
+        // Display the status message dynamically using script
+        pw.println("<script>document.getElementById('message').innerHTML='" + status + "'</script>");
+    }
+}
